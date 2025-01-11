@@ -11,13 +11,21 @@ def load_sentiment_pipeline():
 
 sentiment_analyzer = load_sentiment_pipeline()
 
-# Function to analyze sentiment
+# Function to analyze sentiment and categorize
 def analyze_sentiment(text):
     result = sentiment_analyzer(text)[0]
-    return result['label'], result['score']
+    score = result['score']
+    label = result['label']
+    if label == "POSITIVE" and score > 0.6:
+        category = "Positive"
+    elif label == "NEGATIVE" and score < 0.4:
+        category = "Negative"
+    else:
+        category = "Neutral"
+    return category, score
 
 # Title
-st.title("Sentiment Analysis App (Default Model)")
+st.title("Sentiment Analysis App (Positive, Negative, Neutral)")
 
 # Upload CSV file
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
