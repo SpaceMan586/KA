@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from transformers import pipeline
 
-# Initialize sentiment analysis pipeline with Indonesian model
+# Initialize default sentiment analysis pipeline
 @st.cache_resource
 def load_sentiment_pipeline():
-    return pipeline("sentiment-analysis", model="indobenchmark/indobert-base-p1")
+    return pipeline("sentiment-analysis")  # Using the default pipeline
 
 sentiment_analyzer = load_sentiment_pipeline()
 
@@ -17,7 +17,7 @@ def analyze_sentiment(text):
     return result['label'], result['score']
 
 # Title
-st.title("Sentiment Analysis App (Bahasa Indonesia)")
+st.title("Sentiment Analysis App (Default Model)")
 
 # Upload CSV file
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
@@ -50,7 +50,7 @@ if uploaded_file is not None:
             # Plot sentiment category distribution
             st.write("Sentiment Category Distribution:")
             fig, ax = plt.subplots(figsize=(8, 6))
-            sns.countplot(data=data, x='sentiment_category', order=['neutral', 'positive', 'negative'], palette='viridis', ax=ax)
+            sns.countplot(data=data, x='sentiment_category', palette='viridis', ax=ax)
             ax.set_title("Sentiment Category Distribution", fontsize=16)
             ax.set_xlabel("Sentiment Category", fontsize=14)
             ax.set_ylabel("Count", fontsize=14)
